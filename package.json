@@ -7,7 +7,7 @@
     "test": "jest src",
     "last": "ts-node src/index.ts",
     "eslint": "eslint --fix --cache .",
-    "format": "npx prettier --write .",
+    "format": "npx prettier --cache --write .",
     "lint": "npm run eslint && npm run format",
     "prepare": "husky install"
   },
