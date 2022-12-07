@@ -11,7 +11,7 @@ async function main(): Promise<void> {
   const nextDayNumber = parseInt(last.substring('day'.length)) + 1;
 
   console.log(`creating day ${nextDayNumber}`);
-  await fs.writeFile(`inputs/day${nextDayNumber}`, '');
+  await fs.writeFile(`inputs/day${nextDayNumber}.txt`, '');
 
   const file = await fs.readFile('src/days/day0.ts', 'utf8');
   const fileTest = await fs.readFile('src/days/day0.test.ts', 'utf8');
