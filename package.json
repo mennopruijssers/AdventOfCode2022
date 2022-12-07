@@ -4,8 +4,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "jest src",
+    "test": "jest src --watch",
     "last": "ts-node src/index.ts",
+    "next": "ts-node src/utils/next.ts",
     "eslint": "eslint --fix --cache .",
     "format": "npx prettier --cache --write .",
     "lint": "npm run eslint && npm run format",
