@@ -5,7 +5,9 @@
   "description": "",
   "scripts": {
     "test": "jest src",
+    "test:watch": "jest --watch src",
     "last": "ts-node src/index.ts",
+    "next": "ts-node src/utils/next.ts",
     "eslint": "eslint --fix --cache .",
     "format": "npx prettier --cache --write .",
     "lint": "npm run eslint && npm run format",
