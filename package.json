@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "build": "tsc -b",
     "test": "jest src",
     "test:watch": "jest --watch src",
     "last": "ts-node src/index.ts",
@@ -11,6 +12,9 @@
     "eslint": "eslint --fix --cache .",
     "format": "npx prettier --cache --write .",
     "lint": "npm run eslint && npm run format",
+    "lint:check": "npm run eslint:check && npm run format:check",
+    "eslint:check": "eslint .",
+    "format:check": "npx prettier -c .",
     "prepare": "husky install"
   },
   "author": "",
