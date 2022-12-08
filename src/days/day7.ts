@@ -56,11 +56,13 @@ export class Day extends BaseDay<Node, number, unknown> {
           if (toDir === '/') {
             currentNode = rootNode;
           } else if (toDir === '..') {
+            /* istanbul ignore next */
             if (currentNode.parent === null) {
               throw new Error('already at root');
             }
             currentNode = currentNode.parent;
           } else {
+            /* istanbul ignore next */
             if (!currentNode.children[toDir]) {
               throw new Error(`Dir ${toDir} not found`);
             }
