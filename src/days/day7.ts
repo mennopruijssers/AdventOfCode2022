@@ -23,6 +23,7 @@ function calcSize(node: Node): number {
   if (!node.isDir) {
     return node.size;
   }
+  /* istanbul ignore next */
   if (node.size > 0) {
     return node.size;
   }
@@ -92,11 +93,6 @@ export class Day extends BaseDay<Node, number, unknown> {
 
   async partOne(): Promise<number> {
     calcSize(this.input);
-
-    const emptyDirs = filterNodes(this.input, (node) => {
-      return node.isDir && node.size === 0;
-    });
-    console.log(`no of empty dirs: ${emptyDirs.length}`);
 
     const bigDirs: Node[] = filterNodes(this.input, (node) => {
       return node.isDir && node.size <= 100000;

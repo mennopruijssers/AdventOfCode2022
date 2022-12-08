@@ -13,7 +13,7 @@ type Input = {
 };
 
 export function parseStacks(input: string): Stack[] {
-  const [_, ...rows] = input.split('\n').reverse();
+  const [_first, ...rows] = input.split('\n').reverse();
   const stacks: Stack[] = [];
 
   for (const row of rows) {
@@ -33,10 +33,13 @@ export function parseMoves(input: string): Move[] {
     .split('\n')
     .map((line) => {
       const matches = line.match(/move (\d+) from (\d+) to (\d+)/);
-
-      const amount = parseInt(matches![1]);
-      const from = parseInt(matches![2]);
-      const to = parseInt(matches![3]);
+      /* istanbul ignore next */
+      if (matches === null) {
+        return null;
+      }
+      const amount = parseInt(matches[1]);
+      const from = parseInt(matches[2]);
+      const to = parseInt(matches[3]);
       return { amount, from, to };
     })
     .filter((x): x is Move => x !== null);
@@ -57,7 +60,11 @@ export class Day extends BaseDay<Input, string, string> {
     function applyMove({ amount, from, to }: Move): void {
       for (let i = 0; i < amount; i++) {
         const crate = stacks[from - 1].pop();
-        stacks[to - 1].push(crate!);
+        /* istanbul ignore next */
+        if (crate === undefined) {
+          throw new Error('no crates left');
+        }
+        stacks[to - 1].push(crate);
       }
     }
 
