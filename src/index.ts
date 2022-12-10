@@ -8,12 +8,17 @@ import * as fs from 'fs/promises';
 async function main(): Promise<void> {
   const inputs = await fs.readdir('./inputs/');
 
-  const last = inputs.reverse()[0];
-  const dayNumber = parseInt(last.substring('day'.length));
+  const dayNumber = inputs
+    .map((fileName) => parseInt(fileName.substring('day-'.length)))
+    .filter((n) => !isNaN(n))
+    .sort((a, b) => b - a)[0];
   console.log(`running: day ${dayNumber}`);
 
-  const input = await fs.readFile('./inputs/' + last, { encoding: 'utf-8' });
-  const DayType = (await import(`./days/day${dayNumber}`)).default;
+  const paddedDay = dayNumber.toString().padStart(2, '0');
+  const input = await fs.readFile(`./inputs/day-${paddedDay}.txt`, {
+    encoding: 'utf-8',
+  });
+  const DayType = (await import(`./days/day-${paddedDay}`)).default;
   const day = new DayType(input);
   assert(day);
   console.log('running part 1');
