@@ -1,4 +1,4 @@
-import Day from './day7';
+import Day from './day-07';
 import { dayRunner } from './test-runner';
 
 const example = `$ cd /

@@ -1,4 +1,4 @@
-import Day from './day6';
+import Day from './day-06';
 import { dayRunner } from './test-runner';
 
 dayRunner(Day, 'mjqjpqmgbljsphdztnvjfqwrcgsmlb', 7, 19);

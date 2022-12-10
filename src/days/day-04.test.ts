@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals';
-import { Day, Range } from './day4';
+import { Day, Range } from './day-04';
 import { dayRunner } from './test-runner';
 
 const example = `2-4,6-8

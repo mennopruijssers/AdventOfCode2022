@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals';
-import Day, { Play, Result, result } from './day2';
+import Day, { Play, Result, result } from './day-02';
 import { dayRunner } from './test-runner';
 
 const example = `A Y
