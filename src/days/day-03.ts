@@ -1,4 +1,5 @@
 import { BaseDay } from '../day';
+import { createChunks } from './utils';
 
 function intersection<T>(arr1: T[], arr2: T[]): T[] {
   return arr1.filter((v) => arr2.includes(v));
@@ -40,16 +41,7 @@ export class Day extends BaseDay<string[], number, number> {
     return sum;
   }
   async partTwo(): Promise<number> {
-    const groupSize = 3;
-    const groups = this.input.reduce<string[][]>((resultArray, item, index) => {
-      const chunkIndex = Math.floor(index / groupSize);
-      if (resultArray[chunkIndex]) {
-        resultArray[chunkIndex].push(item);
-      } else {
-        resultArray[chunkIndex] = [item];
-      }
-      return resultArray;
-    }, []);
+    const groups = createChunks(this.input, 3);
 
     function findCommonItem(rugsacks: string[]) {
       const [first, ...others] = rugsacks;
