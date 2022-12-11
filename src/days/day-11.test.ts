@@ -30,7 +30,7 @@ Monkey 3:
     If true: throw to monkey 0
     If false: throw to monkey 1`;
 
-dayRunner(Day, example, 10605, 42);
+dayRunner(Day, example, 10605, 2713310158);
 
 describe('parseOperation', () => {
   const input = 23;

@@ -29,54 +29,62 @@ export function parseOperation(string: string): Monkey['operation'] {
   throw new Error(`Unsupported operation: ${operation}`);
 }
 
-function parseTest(string: string): Monkey['test'] {
-  const match = string.match(/Test: divisible by (\d+)/);
-  assert(match);
-
-  const divisibleBy = parseInt(match[1]);
-
-  return (input: number) => input % divisibleBy === 0;
-}
-
 class Monkey {
-  name: string;
+  index: number;
   items: number[];
   operation: (input: number) => number;
-  test: (input: number) => boolean;
+  divisibleBy: number;
   toIfTrue: number;
   toIfFalse: number;
   totalInspected = 0;
 
   constructor(
-    name: string,
+    index: number,
     items: number[],
     operation: Monkey['operation'],
-    test: Monkey['test'],
+    divisibleBy: number,
     toIfTrue: number,
     toIfFalse: number
   ) {
-    this.name = name;
+    this.index = index;
     this.items = items;
     this.operation = operation;
-    this.test = test;
+    this.divisibleBy = divisibleBy;
     this.toIfTrue = toIfTrue;
     this.toIfFalse = toIfFalse;
   }
 
-  round(monkeys: Monkey[]): void {
+  round(monkeys: Monkey[], division: number, mod?: number): void {
     let item: number | undefined;
     while ((item = this.items.shift())) {
       this.totalInspected++;
       item = this.operation(item);
-      item = Math.floor(item / 3);
-      const to = this.test(item) ? this.toIfTrue : this.toIfFalse;
+      if (division !== 1) {
+        item = Math.floor(item / division);
+      }
+      if (mod) {
+        item = item % mod;
+      }
+      const to = item % this.divisibleBy === 0 ? this.toIfTrue : this.toIfFalse;
       monkeys[to].items.push(item);
     }
   }
 
+  clone(): Monkey {
+    return new Monkey(
+      this.index,
+      [...this.items],
+      this.operation,
+      this.divisibleBy,
+      this.toIfTrue,
+      this.toIfFalse
+    );
+  }
+
   static parse(input: string[]): Monkey {
-    assert(input[0].match(/Monkey \d+:/));
-    const name = input[0].substring(0, input[0].length - 1);
+    const indexMatch = input[0].match(/Monkey (\d+):/);
+    assert(indexMatch);
+    const index = parseInt(indexMatch[1]);
 
     assert(input[1].match(/ {2}Starting items: (\d+, )*\d+/));
     const items = input[1]
@@ -86,7 +94,10 @@ class Monkey {
       .map((s) => parseInt(s));
 
     const operation = parseOperation(input[2]);
-    const test = parseTest(input[3]);
+    const divisibleByMatch = input[3].match(/^ {2}Test: divisible by (\d+)$/);
+    assert(divisibleByMatch);
+
+    const divisibleBy = parseInt(divisibleByMatch[1]);
 
     const ifTrueMatch = input[4].match(/If true: throw to monkey (\d+)/);
     assert(ifTrueMatch);
@@ -96,7 +107,14 @@ class Monkey {
     assert(ifFalseMatch);
     const toIfFalse = parseInt(ifFalseMatch[1]);
 
-    return new Monkey(name, items, operation, test, toIfTrue, toIfFalse);
+    return new Monkey(
+      index,
+      items,
+      operation,
+      divisibleBy,
+      toIfTrue,
+      toIfFalse
+    );
   }
 }
 
@@ -107,9 +125,9 @@ export class Day extends BaseDay<Monkey[], number, number> {
   }
 
   async partOne(): Promise<number> {
-    const monkeys = this.input;
+    const monkeys = this.input.map((m) => m.clone());
     for (let round = 0; round < 20; round++) {
-      monkeys.forEach((m) => m.round(monkeys));
+      monkeys.forEach((m) => m.round(monkeys, 3));
     }
     const inspections = monkeys
       .map(({ totalInspected }) => totalInspected)
@@ -118,7 +136,17 @@ export class Day extends BaseDay<Monkey[], number, number> {
   }
 
   async partTwo(): Promise<number> {
-    return 42;
+    const monkeys = this.input.map((m) => m.clone());
+    const mod = monkeys
+      .map(({ divisibleBy }) => divisibleBy)
+      .reduce((product, cur) => cur * product, 1);
+    for (let round = 1; round <= 10000; round++) {
+      monkeys.forEach((m) => m.round(monkeys, 1, mod));
+    }
+    const inspections = monkeys
+      .map(({ totalInspected }) => totalInspected)
+      .sort((a, b) => b - a);
+    return inspections[0] * inspections[1];
   }
 }
 
