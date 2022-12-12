@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { BaseDay } from '../day';
-import { createChunks } from './utils';
+import { createChunks } from '../utils/chunks';
 
 export function parseOperation(string: string): Monkey['operation'] {
   const match = string.match(/Operation: new = old ([*+]) (\d+|old)/);

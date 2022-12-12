@@ -1,5 +1,5 @@
 import { BaseDay } from '../day';
-import { createChunks } from './utils';
+import { createChunks } from '../utils/chunks';
 
 function intersection<T>(arr1: T[], arr2: T[]): T[] {
   return arr1.filter((v) => arr2.includes(v));
