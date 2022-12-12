@@ -1,9 +1,5 @@
 import { BaseDay } from '../day';
-
-type Point = {
-  x: number;
-  y: number;
-};
+import { Point } from '../utils/types';
 
 enum Direction {
   U,
