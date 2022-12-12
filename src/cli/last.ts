@@ -18,7 +18,7 @@ async function main(): Promise<void> {
   const input = await fs.readFile(`./inputs/day-${paddedDay}.txt`, {
     encoding: 'utf-8',
   });
-  const DayType = (await import(`./days/day-${paddedDay}`)).default;
+  const DayType = (await import(`../days/day-${paddedDay}`)).default;
   const day = new DayType(input);
   assert(day);
   console.log('running part 1');
