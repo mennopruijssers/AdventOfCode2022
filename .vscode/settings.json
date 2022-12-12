@@ -16,5 +16,6 @@
     "enabled": true,
     "showInlineError": true
   },
-  "jest.showCoverageOnLoad": true
+  "jest.showCoverageOnLoad": true,
+  "cSpell.words": ["addx", "rugsacks"]
 }
