@@ -5,7 +5,7 @@ type Opts<T> = {
   grid: T[][];
   start: Point;
   isEnd: isEndFN<T>;
-  isAllowed?: (from: T, to: T) => boolean;
+  isAllowed: (from: T, to: T) => boolean;
   calculateCost?: (from: T, to: T) => number;
 };
 
@@ -37,7 +37,7 @@ export function findShortestPath<T>({
   grid: gridValues,
   start,
   isEnd,
-  isAllowed = () => true,
+  isAllowed,
   calculateCost = () => 1,
 }: Opts<T>): Point[] {
   const queue: Point[] = [start];
@@ -77,16 +77,7 @@ export function findShortestPath<T>({
     queue.sort((p1, p2) => {
       const cost1 = grid.get(p1).cost;
       const cost2 = grid.get(p2).cost;
-      if (Number.isFinite(cost1) && Number.isFinite(cost1)) {
-        return cost1 - cost2;
-      }
-      if (Number.isFinite(cost1)) {
-        return -1;
-      }
-      if (Number.isFinite(cost2)) {
-        return 1;
-      }
-      return 0;
+      return cost1 - cost2;
     });
   }
 
