@@ -1,9 +1,13 @@
 import { BaseDay } from '../day';
 import { isArray } from '../utils/predicates';
 
-type PacketData = PacketData[] | number;
-type Packet = PacketData[];
 type Pair = [Packet, Packet];
+type Packet = PacketData[];
+type PacketData = PacketData[] | number;
+
+function convertToArray(p: PacketData): PacketData[] {
+  return isArray(p) ? p : [p];
+}
 
 function isOrderCorrect(p1: PacketData, p2: PacketData): boolean | undefined {
   if (!isArray<PacketData>(p1) && !isArray<PacketData>(p2)) {
@@ -11,19 +15,8 @@ function isOrderCorrect(p1: PacketData, p2: PacketData): boolean | undefined {
     if (p1 > p2) return false;
     return undefined;
   }
-  let a1: PacketData[];
-  let a2: PacketData[];
-
-  if (isArray<PacketData>(p1)) {
-    a1 = p1;
-  } else {
-    a1 = [p1];
-  }
-  if (isArray<PacketData>(p2)) {
-    a2 = p2;
-  } else {
-    a2 = [p2];
-  }
+  const a1 = convertToArray(p1);
+  const a2 = convertToArray(p2);
 
   for (let i = 0; i < a1.length; i++) {
     if (a2.length < i + 1) {
@@ -34,11 +27,8 @@ function isOrderCorrect(p1: PacketData, p2: PacketData): boolean | undefined {
       return order;
     }
   }
-  if (a2.length > a1.length) {
-    return true;
-  }
 
-  return undefined;
+  return a2.length > a1.length ? true : undefined;
 }
 
 function isPacketOrderCorrect(p1: Packet, p2: Packet): boolean {
