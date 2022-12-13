@@ -5,22 +5,6 @@ type PacketData = PacketData[] | number;
 type Packet = PacketData[];
 type Pair = [Packet, Packet];
 
-// function parsePacketData(string: string): [PacketData, string] {
-//   if (string.startsWith('[')) {
-//     string = string.substring(1);
-//     const data = [];
-//     while (!string.startsWith(']')) {
-//       const [item, left] = parsePacketData(string);
-//       data.push(item);
-//       string = left;
-//     }
-//     string = string.substring(1);
-//   } else {
-//     const [digitString, left] = string.split(',', 2);
-//     return [parseInt(digitString, 10), left];
-//   }
-// }
-
 function isOrderCorrect(p1: PacketData, p2: PacketData): boolean | undefined {
   if (!isArray<PacketData>(p1) && !isArray<PacketData>(p2)) {
     if (p1 < p2) return true;
@@ -59,6 +43,7 @@ function isOrderCorrect(p1: PacketData, p2: PacketData): boolean | undefined {
 
 function isPacketOrderCorrect(p1: Packet, p2: Packet): boolean {
   const order = isOrderCorrect(p1, p2);
+  //istanbul ignore next
   if (order === undefined) {
     throw new Error('should not happen');
   }
@@ -70,7 +55,6 @@ export class Day extends BaseDay<Pair[], number, number> {
     const pairs = input.split('\n\n').map((line) => line.split('\n'));
 
     return pairs.map(([line1, line2]) => {
-      // return [parsePacketData(line1),parsePacketData(line2)]
       return [JSON.parse(line1), JSON.parse(line2)];
     });
   }
@@ -89,7 +73,22 @@ export class Day extends BaseDay<Pair[], number, number> {
   }
 
   async partTwo(): Promise<number> {
-    return 42;
+    const dividerPackets = this.parse(`[[2]]
+    [[6]]`)[0];
+    const allPackets = [...dividerPackets, ...this.input.flat()];
+
+    const sorted = allPackets.sort((a, b) => {
+      if (isOrderCorrect(a, b)) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+
+    const indices = dividerPackets.map((p) => sorted.indexOf(p) + 1);
+
+    const product = indices.reduce((product, current) => product * current, 1);
+    return product;
   }
 }
 

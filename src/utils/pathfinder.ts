@@ -81,5 +81,6 @@ export function findShortestPath<T>({
     });
   }
 
+  // istanbul ignore next
   throw new Error("can't find path");
 }
