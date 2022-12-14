@@ -8,7 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "Run last day",
-      "program": "${workspaceFolder}/src/index.ts",
+      "program": "${workspaceFolder}/src/cli/last.ts",
       "preLaunchTask": "tsc: build - tsconfig.json",
       "outFiles": ["${workspaceFolder}/out/**/*.js"]
     },
