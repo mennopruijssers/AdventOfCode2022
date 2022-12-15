@@ -138,7 +138,7 @@ export class Day extends BaseDay<Grid, number, number> {
       placed = flow(grid);
     } while (placed);
 
-    return grid.values().filter(([p, s]) => s === Substance.Sand).length;
+    return grid.values().filter(([_p, s]) => s === Substance.Sand).length;
   }
 }
 
