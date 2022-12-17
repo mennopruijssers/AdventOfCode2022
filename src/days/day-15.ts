@@ -91,7 +91,7 @@ export class Day extends BaseDay<Sensor[], number, number> {
 
   async partTwo(): Promise<number> {
     //istanbul ignore next
-    const max = this.input.length === 14 ? 20 : 4000000;
+    const max = this.input.length === 14 ? 20 : 4_000_000;
 
     for (let y = 0; y <= max; y++) {
       const ranges = this.input
@@ -104,13 +104,13 @@ export class Day extends BaseDay<Sensor[], number, number> {
         if (r[0] <= x) {
           x = r[1];
         } else {
-          return (x + 1) * 4000000 + y;
+          return (x + 1) * 4_000_000 + y;
         }
         if (x === max) break;
       }
       // istanbul ignore next: doesn't happen in example
       if (x !== max) {
-        return (x + 1) * 4000000 + y;
+        return (x + 1) * 4_000_000 + y;
       }
     }
     //istanbul ignore next: shouldn't happen
