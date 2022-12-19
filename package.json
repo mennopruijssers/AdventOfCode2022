@@ -5,7 +5,7 @@
   "description": "",
   "scripts": {
     "build": "tsc -b",
-    "test": "jest",
+    "test": "jest --onlyChanged",
     "test:watch": "jest --watch",
     "last": "ts-node src/cli/last.ts",
     "next": "ts-node src/cli/next.ts",
