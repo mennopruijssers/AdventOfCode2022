@@ -1,5 +1,5 @@
 import Day from './day-07';
-import { dayRunner } from './test-runner';
+import { dayRunner } from './test-util';
 
 const example = `$ cd /
 $ ls

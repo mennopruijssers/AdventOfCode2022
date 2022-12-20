@@ -1,5 +1,5 @@
 import Day from './day-06';
-import { dayRunner } from './test-runner';
+import { dayRunner } from './test-util';
 /* spellchecker: disable */
 dayRunner(Day, 'mjqjpqmgbljsphdztnvjfqwrcgsmlb', 7, 19);
 dayRunner(Day, 'bvwbjplbgvbhsrlpgdmjqwftvncz', 5, 23);

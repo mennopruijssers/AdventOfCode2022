@@ -1,3 +1,4 @@
+//istanbul ignore file: ignored when SLOW_TEST <> 1
 import assert from 'assert';
 import { BaseDay } from '../day';
 

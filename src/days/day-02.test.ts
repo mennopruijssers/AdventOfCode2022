@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import Day, { Play, Result, result } from './day-02';
-import { dayRunner } from './test-runner';
+import { dayRunner } from './test-util';
 
 const example = `A Y
   B X

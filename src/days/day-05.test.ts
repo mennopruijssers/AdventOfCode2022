@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import Day, { parseMoves, parseStacks } from './day-05';
-import { dayRunner } from './test-runner';
+import { dayRunner } from './test-util';
 
 const example = `    [D]
 [N] [C]

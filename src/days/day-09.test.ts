@@ -1,5 +1,5 @@
 import Day from './day-09';
-import { dayRunner } from './test-runner';
+import { dayRunner } from './test-util';
 
 const example = `R 4
 U 4

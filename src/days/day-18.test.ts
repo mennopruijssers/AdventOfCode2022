@@ -1,5 +1,5 @@
 import Day from './day-18';
-import { dayRunner } from './test-runner';
+import { dayRunner } from './test-util';
 
 const example = `2,2,2
 1,2,2

@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import Day, { parseOperation } from './day-11';
-import { dayRunner } from './test-runner';
+import { dayRunner } from './test-util';
 
 const example = `Monkey 0:
   Starting items: 79, 98
