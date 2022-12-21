@@ -8,10 +8,20 @@ import * as fs from 'fs/promises';
 async function main(): Promise<void> {
   const inputs = await fs.readdir('./inputs/');
 
-  const dayNumber = inputs
-    .map((fileName) => parseInt(fileName.substring('day-'.length)))
-    .filter((n) => !isNaN(n))
-    .sort((a, b) => b - a)[0];
+  const args = process.argv;
+  let dayNumber;
+  if (args.length === 2 || args[2] === 'last') {
+    dayNumber = inputs
+      .map((fileName) => parseInt(fileName.substring('day-'.length)))
+      .filter((n) => !isNaN(n))
+      .sort((a, b) => b - a)[0];
+  } else {
+    dayNumber = parseInt(args[2], 10);
+  }
+  if (isNaN(dayNumber)) {
+    throw new Error(`invalid day: "${args[2]}"!`);
+  }
+
   console.log(`running: day ${dayNumber}`);
 
   const paddedDay = dayNumber.toString().padStart(2, '0');
