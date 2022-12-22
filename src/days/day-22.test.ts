@@ -5,6 +5,7 @@ import Day, {
   parseInstructions,
   PointWithDirection,
   rotate,
+  wrapDefault,
 } from './day-22';
 import { dayRunner } from './test-util';
 
@@ -73,46 +74,88 @@ describe('rotate', () => {
 });
 
 describe('move', () => {
-  const grid = parseGrid('.....\n.....\n.....\n.....');
+  describe('default wrapping', () => {
+    const grid = parseGrid('.....\n.....\n.....\n.....');
+    const wrap = wrapDefault;
+    it('moves up', () => {
+      const next = move({
+        move: 2,
+        current: { x: 2, y: 2, direction: 3 },
+        grid,
+        wrap,
+      });
+      expect(next).toEqual({ x: 2, y: 0, direction: 3 });
+    });
 
-  it('moves up', () => {
-    const next = move({ move: 2, current: { x: 2, y: 2, direction: 3 }, grid });
-    expect(next).toEqual({ x: 2, y: 0, direction: 3 });
-  });
+    it('moves up and wraps - default', () => {
+      const next = move({
+        move: 2,
+        current: { x: 2, y: 1, direction: 3 },
+        grid,
+        wrap,
+      });
+      expect(next).toEqual({ x: 2, y: 3, direction: 3 });
+    });
 
-  it('moves up and wraps', () => {
-    const next = move({ move: 2, current: { x: 2, y: 1, direction: 3 }, grid });
-    expect(next).toEqual({ x: 2, y: 3, direction: 3 });
-  });
+    it('moves down', () => {
+      const next = move({
+        move: 2,
+        current: { x: 2, y: 0, direction: 1 },
+        grid,
+        wrap,
+      });
+      expect(next).toEqual({ x: 2, y: 2, direction: 1 });
+    });
 
-  it('moves down', () => {
-    const next = move({ move: 2, current: { x: 2, y: 0, direction: 1 }, grid });
-    expect(next).toEqual({ x: 2, y: 2, direction: 1 });
-  });
+    it('moves down and wraps', () => {
+      const next = move({
+        move: 2,
+        current: { x: 2, y: 2, direction: 1 },
+        grid,
+        wrap,
+      });
+      expect(next).toEqual({ x: 2, y: 0, direction: 1 });
+    });
 
-  it('moves down and wraps', () => {
-    const next = move({ move: 2, current: { x: 2, y: 2, direction: 1 }, grid });
-    expect(next).toEqual({ x: 2, y: 0, direction: 1 });
-  });
+    it('moves left', () => {
+      const next = move({
+        move: 2,
+        current: { x: 2, y: 2, direction: 2 },
+        grid,
+        wrap,
+      });
+      expect(next).toEqual({ x: 0, y: 2, direction: 2 });
+    });
 
-  it('moves left', () => {
-    const next = move({ move: 2, current: { x: 2, y: 2, direction: 2 }, grid });
-    expect(next).toEqual({ x: 0, y: 2, direction: 2 });
-  });
+    it('moves left and wraps', () => {
+      const next = move({
+        move: 2,
+        current: { x: 1, y: 2, direction: 2 },
+        grid,
+        wrap,
+      });
+      expect(next).toEqual({ x: 4, y: 2, direction: 2 });
+    });
 
-  it('moves left and wraps', () => {
-    const next = move({ move: 2, current: { x: 1, y: 2, direction: 2 }, grid });
-    expect(next).toEqual({ x: 4, y: 2, direction: 2 });
-  });
+    it('moves right', () => {
+      const next = move({
+        move: 2,
+        current: { x: 2, y: 2, direction: 0 },
+        grid,
+        wrap,
+      });
+      expect(next).toEqual({ x: 4, y: 2, direction: 0 });
+    });
 
-  it('moves right', () => {
-    const next = move({ move: 2, current: { x: 2, y: 2, direction: 0 }, grid });
-    expect(next).toEqual({ x: 4, y: 2, direction: 0 });
-  });
-
-  it('moves right and wraps', () => {
-    const next = move({ move: 2, current: { x: 4, y: 2, direction: 0 }, grid });
-    expect(next).toEqual({ x: 1, y: 2, direction: 0 });
+    it('moves right and wraps', () => {
+      const next = move({
+        move: 2,
+        current: { x: 4, y: 2, direction: 0 },
+        grid,
+        wrap,
+      });
+      expect(next).toEqual({ x: 1, y: 2, direction: 0 });
+    });
   });
 });
 

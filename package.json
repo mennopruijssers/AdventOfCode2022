@@ -8,7 +8,7 @@
     "test": "jest --onlyChanged",
     "test:ci": "ENABLE_SLOW_TESTS=1 jest",
     "test:watch": "jest --watch",
-    "last": "ts-node src/cli/run.ts last",
+    "last": "ts-node --files src/cli/run.ts last",
     "day": "ts-node src/cli/run.ts",
     "next": "ts-node src/cli/next.ts",
     "eslint": "eslint --fix --cache .",

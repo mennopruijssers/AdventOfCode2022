@@ -44,25 +44,65 @@ export function parseGrid(input: string): Grid<Cell> {
   return new Grid(cells);
 }
 
+export function wrapDefault(
+  point: PointWithDirection,
+  grid: Input['grid']
+): PointWithDirection {
+  const notEmpty = (c: Cell): boolean => c !== undefined && c != ' ';
+  // Right
+  if (point.direction === 0) {
+    return { ...point, x: grid.grid[point.y].findIndex(notEmpty) };
+  }
+  // Down
+  if (point.direction === 1) {
+    return {
+      ...point,
+      y: grid.grid.map((c) => c[point.x]).findIndex(notEmpty),
+    };
+  }
+  // Left
+  if (point.direction === 2) {
+    return { ...point, x: grid.grid[point.y].findLastIndex(notEmpty) };
+  }
+  // Up
+  return {
+    ...point,
+    y: grid.grid.map((c) => c[point.x]).findLastIndex(notEmpty),
+  };
+}
+
 export function move({
   move,
   current,
   grid,
+  wrap,
 }: {
   move: Move;
   current: PointWithDirection;
   grid: Input['grid'];
+  wrap: (
+    current: PointWithDirection,
+    grid: Input['grid']
+  ) => PointWithDirection;
 }): PointWithDirection {
   const axis: keyof Point = [0, 2].includes(current.direction) ? 'x' : 'y';
 
-  const value = [2, 3].includes(current.direction) ? -1 : 1;
+  const diff = [2, 3].includes(current.direction) ? -1 : 1;
 
   for (let i = 0; i < move; i++) {
-    const max = axis === 'y' ? grid.grid.length : grid.grid[current.y].length;
     const next = { ...current };
-    do {
-      next[axis] = (((next[axis] + value) % max) + max) % max;
-    } while (grid.getOrDefault(next, ' ') === ' ');
+    const max = axis === 'y' ? grid.grid.length : grid.grid[current.y].length;
+    const v = current[axis] + diff;
+    if (
+      v < 0 ||
+      v >= max ||
+      grid.getOrDefault({ ...next, [axis]: v }, ' ') === ' '
+    ) {
+      next[axis] = wrap({ ...current }, grid)[axis];
+    } else {
+      next[axis] = v;
+    }
+
     if (grid.get(next) === '#') {
       break;
     }
@@ -110,9 +150,10 @@ export class Day extends BaseDay<Input, number, number> {
       y: 0,
       direction: 0,
     };
+
     for (const instruction of instructions) {
       if (isMove(instruction)) {
-        current = move({ current, grid, move: instruction });
+        current = move({ current, grid, move: instruction, wrap: wrapDefault });
       } else {
         current = rotate({ current, rotate: instruction });
       }
