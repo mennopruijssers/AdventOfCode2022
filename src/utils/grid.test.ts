@@ -51,4 +51,23 @@ describe('grid', () => {
       expect(() => grid.get(p)).toThrow('out of bounds');
     });
   });
+
+  describe('getOrDefault', () => {
+    it('returns the right value', () => {
+      for (let x = 0; x <= 4; x++) {
+        for (let y = 0; y <= 4; y++) {
+          expect(grid.getOrDefault({ x, y }, 'DEFAULT')).toBe(`${y},${x}`);
+        }
+      }
+    });
+
+    it.each([
+      { x: -1, y: 2 },
+      { x: 2, y: -1 },
+      { x: 20, y: 2 },
+      { x: 2, y: 20 },
+    ])('returns default when out of bounds: $p.x, %p.y', (p) => {
+      expect(grid.getOrDefault(p, 'DEFAULT')).toBe(`DEFAULT`);
+    });
+  });
 });

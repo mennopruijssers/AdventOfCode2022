@@ -7,7 +7,7 @@ export type Cell<T> = {
 };
 
 export class Grid<T> {
-  private grid: T[][];
+  public grid: T[][];
   constructor(grid: T[][]) {
     this.grid = grid;
   }
@@ -41,6 +41,17 @@ export class Grid<T> {
     const line = this.grid[y];
     if (x < 0 || x > line.length) {
       throw new Error('out of bounds');
+    }
+
+    return line[x];
+  }
+  getOrDefault({ x, y }: Point, def: T): T {
+    if (y < 0 || y > this.grid.length) {
+      return def;
+    }
+    const line = this.grid[y];
+    if (x < 0 || x > line.length) {
+      return def;
     }
 
     return line[x];
