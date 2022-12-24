@@ -1,10 +1,11 @@
 import { beforeEach, expect, it } from '@jest/globals';
 import { BaseDay } from '../day';
 
+type ValidatorFN<T> = (output: T) => void;
 export function dayRunner<T1, T2>(
   DayType: new (input: string) => BaseDay<unknown, T1, T2>,
   example: string,
-  partOne?: T1,
+  partOne?: T1 | ValidatorFN<T1>,
   partTwo?: T2
 ) {
   let day: BaseDay<unknown, T1, T2>;
@@ -16,7 +17,11 @@ export function dayRunner<T1, T2>(
   if (partOne) {
     it('part 1', async () => {
       const output = await day.partOne();
-      expect(output).toBe(partOne);
+      if (typeof partOne === 'function') {
+        (partOne as ValidatorFN<T1>)(output);
+      } else {
+        expect(output).toBe(partOne);
+      }
     });
   }
 
