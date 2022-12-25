@@ -38,7 +38,9 @@ export function slowTest(fn: () => unknown): void {
   //istanbul ignore next
   if (process.env['ENABLE_SLOW_TEST'] === '1') {
     fn();
-  } else {
+  }
+  //istanbul ignore next
+  else {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     it.skip('slow tests skipped', () => {});
   }

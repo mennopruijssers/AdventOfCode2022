@@ -1,5 +1,4 @@
 import assert from 'assert';
-import { mainModule } from 'process';
 import { BaseDay } from '../day';
 import { Grid } from '../utils/grid';
 import { leastCommonMultiple } from '../utils/math';
