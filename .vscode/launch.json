@@ -15,6 +15,17 @@
       "runtimeArgs": ["exec", "--using-file", "--", "node"]
     },
     {
+      "type": "node",
+      "request": "launch",
+      "name": "Run day 22",
+      "program": "${workspaceFolder}/src/cli/run.ts",
+      "args": ["22"],
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "outFiles": ["${workspaceFolder}/out/**/*.js"],
+      "runtimeExecutable": "fnm",
+      "runtimeArgs": ["exec", "--using-file", "--", "node"]
+    },
+    {
       "name": "Current TS File",
       "type": "node",
       "request": "launch",

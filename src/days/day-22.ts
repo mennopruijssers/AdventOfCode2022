@@ -71,6 +71,78 @@ export function wrapDefault(
   };
 }
 
+export function wrapCube(current: PointWithDirection): PointWithDirection {
+  /*
+            Top   Right
+            Front
+      Left  Bottom
+      Back
+  */
+  const { x, y, direction } = current;
+  // right
+  if (direction === 0) {
+    if (y < 50) {
+      // Right -> Bottom
+      return { x: 99, y: 100 + 49 - y, direction: 2 };
+    }
+    if (y < 100) {
+      //Front -> Right
+      return { x: y + 50, y: 49, direction: 3 };
+    }
+    if (y < 150) {
+      // bottom -> right
+      return { x: 149, y: 149 - y, direction: 2 };
+    } else {
+      // back -> bottom
+      return { x: y - 100, y: 149, direction: 3 };
+    }
+  }
+  // left
+  if (direction === 2) {
+    if (y < 50) {
+      // top -> left
+      return { x: 0, y: 149 - y, direction: 0 };
+    }
+    if (y < 100) {
+      //front -> left
+      return { x: y - 50, y: 100, direction: 1 };
+    }
+    if (y < 150) {
+      // left -> top
+      return { x: 50, y: 49 - (y - 100), direction: 0 };
+    } else {
+      //back -> top
+      return { x: 50 + y - 150, y: 0, direction: 1 };
+    }
+  }
+  //down
+  if (direction === 1) {
+    if (x < 50) {
+      //back -> right
+      return { x: x + 100, y: 0, direction: 1 };
+    }
+    if (x < 100) {
+      //bottom -> back
+      return { x: 49, y: 150 + x - 50, direction: 2 };
+    } else {
+      // right -> front
+      return { x: 99, y: 50 + x - 100, direction: 2 };
+    }
+  }
+  // up
+  if (x < 50) {
+    // left -> front
+    return { x: 50, y: 50 + x, direction: 0 };
+  }
+  if (x < 100) {
+    // top -> back
+    return { x: 0, y: 150 + x - 50, direction: 0 };
+  } else {
+    // right -> back
+    return { x: x - 100, y: 199, direction };
+  }
+}
+
 export function move({
   move,
   current,
@@ -85,20 +157,19 @@ export function move({
     grid: Input['grid']
   ) => PointWithDirection;
 }): PointWithDirection {
-  const axis: keyof Point = [0, 2].includes(current.direction) ? 'x' : 'y';
-
-  const diff = [2, 3].includes(current.direction) ? -1 : 1;
-
   for (let i = 0; i < move; i++) {
-    const next = { ...current };
-    const max = axis === 'y' ? grid.grid.length : grid.grid[current.y].length;
+    const axis: keyof Point = [0, 2].includes(current.direction) ? 'x' : 'y';
+    const diff = [2, 3].includes(current.direction) ? -1 : 1;
+
+    let next = { ...current };
+    // const max = axis === 'y' ? grid.grid.length : grid.grid[current.y].length;
     const v = current[axis] + diff;
     if (
-      v < 0 ||
-      v >= max ||
+      // v < 0 ||
+      // v >= max ||
       grid.getOrDefault({ ...next, [axis]: v }, ' ') === ' '
     ) {
-      next[axis] = wrap({ ...current }, grid)[axis];
+      next = wrap({ ...current }, grid);
     } else {
       next[axis] = v;
     }
@@ -163,7 +234,22 @@ export class Day extends BaseDay<Input, number, number> {
   }
 
   async partTwo(): Promise<number> {
-    return 42;
+    const { grid, instructions } = this.input;
+    let current: PointWithDirection = {
+      x: grid.grid[0].indexOf('.'),
+      y: 0,
+      direction: 0,
+    };
+
+    for (const instruction of instructions) {
+      if (isMove(instruction)) {
+        current = move({ move: instruction, current, grid, wrap: wrapCube });
+      } else {
+        current = rotate({ current, rotate: instruction });
+      }
+    }
+
+    return (current.y + 1) * 1000 + (current.x + 1) * 4 + current.direction;
   }
 }
 

@@ -35,22 +35,22 @@ export class Grid<T> {
   }
 
   get({ x, y }: Point): T {
-    if (y < 0 || y > this.grid.length) {
+    if (y < 0 || y >= this.grid.length) {
       throw new Error('out of bounds');
     }
     const line = this.grid[y];
-    if (x < 0 || x > line.length) {
+    if (x < 0 || x >= line.length) {
       throw new Error('out of bounds');
     }
 
     return line[x];
   }
   getOrDefault({ x, y }: Point, def: T): T {
-    if (y < 0 || y > this.grid.length) {
+    if (y < 0 || y >= this.grid.length) {
       return def;
     }
     const line = this.grid[y];
-    if (x < 0 || x > line.length) {
+    if (x < 0 || x >= line.length) {
       return def;
     }
 

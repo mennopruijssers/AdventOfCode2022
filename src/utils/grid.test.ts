@@ -64,6 +64,8 @@ describe('grid', () => {
     it.each([
       { x: -1, y: 2 },
       { x: 2, y: -1 },
+      { x: 5, y: 2 },
+      { x: 2, y: 5 },
       { x: 20, y: 2 },
       { x: 2, y: 20 },
     ])('returns default when out of bounds: $p.x, %p.y', (p) => {
